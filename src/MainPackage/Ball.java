@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.Color;
+import java.util.Random;
 
 import javax.swing.JLabel;
 
@@ -9,6 +10,7 @@ public class Ball extends JLabel{
 	private int positionX=690;
 	private int positionY=290;
 	private int VelocityX=1, VelocityY=1;
+	Random random = new Random();
 	
 	Ball() {
 		this.setOpaque(true);
@@ -42,13 +44,13 @@ public class Ball extends JLabel{
 		if(positionX==110) {
 			if(positionY>paddle.getPositionY()&&positionY<paddle.getPositionY()+75) {
 				VelocityX=-VelocityX;
-				VelocityY=-VelocityY;
+				VelocityY=-(random.nextInt(4)+1);
 			}
 		}
 		if(positionX==1380) {
 			VelocityX=-VelocityX;
 		}
-		if(positionY==0||positionY==550) {
+		if((positionY>=0&&positionY<=5)||(positionY>=545&&positionY<=550)) {
 			VelocityY=-VelocityY;
 		}
 		if(positionX==0) {
