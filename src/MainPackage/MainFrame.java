@@ -19,8 +19,6 @@ public class MainFrame extends JFrame implements KeyListener{
 	Ball ball = new Ball();
 	JLabel pauseLabel = new JLabel();
 	String choice="";
-	int paddleX=100,paddleY=225,ballX=690,ballY=290;
-	int VelocityX=1, VelocityY=1;
 	MainFrame(){
 		
 		this.setSize(1400,800);
@@ -59,11 +57,11 @@ public class MainFrame extends JFrame implements KeyListener{
 					@Override
 					public void run() {
 						while(true) {
-						if(ballMovement()==-1) {
+						if(ball.move(paddle)==-1) {
 							timer.cancel();
 							timer.purge();
-							ball.setLocation(690, 290);
-							paddle.setLocation(100, 225);
+							ball.setDefaultPosition();
+							paddle.setDefaultPosition();
 							pauseLabel.setText("Game Over!");
 							pauseLabel.setBounds(550, 400, 1200, 200);
 							pauseLabel.setVisible(true);
@@ -91,17 +89,18 @@ public class MainFrame extends JFrame implements KeyListener{
 		}
 		if(e.getKeyCode()==38)
 		{
-			if(paddleY-25>-10) {
-				paddle.setLocation(paddleX, paddleY=paddleY-25);	
+			if(paddle.getPositionY()-25>-10) {
+				paddle.setPositionY(paddle.getPositionY()-25);
+				paddle.setLocation(paddle.getPositionX(), paddle.getPositionY());	
 			}	
 		}
 		else if(e.getKeyCode()==40)
 		{
-			if(paddleY+25<525) {
-				paddle.setLocation(paddleX, paddleY=paddleY+25);	
+			if(paddle.getPositionY()+25<525) {
+				paddle.setPositionY(paddle.getPositionY()+25);
+				paddle.setLocation(paddle.getPositionX(), paddle.getPositionY());	
 			}	
-		}
-		
+		}	
 	}
 
 	@Override
@@ -109,7 +108,6 @@ public class MainFrame extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
 	public void newGame() {
 		pauseLabel.setText("Press Enter to start. Press ESC to quit.");
 		pauseLabel.setFont(new Font("TimesRoman", Font.BOLD, 52));
@@ -117,36 +115,6 @@ public class MainFrame extends JFrame implements KeyListener{
 		pauseLabel.setBounds(300, 400, 1200, 200);
 		playPanel.add(pauseLabel);
 	}
-	
-	public int ballMovement() {
-		if(ballX==110) {
-			if(ballY>paddleY&&ballY<paddleY+75) {
-				VelocityX=-VelocityX;
-				VelocityY=-VelocityY;
-			}
-		}
-		if(ballX==1380) {
-			VelocityX=-VelocityX;
-		}
-		if(ballY==0||ballY==550) {
-			VelocityY=-VelocityY;
-		}
-		if(ballX==0) {
-			return -1;
-		}
-	//	System.out.println(paddleY);//225 default, paddle length is 75, so between 225 and 300
-		ballX+=VelocityX;
-		ballY+=VelocityY;
-		ball.setLocation(ballX, ballY);
-		try {
-			Thread.sleep(3);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 1;
-	}
-	
 	private void closeGame() {
 		this.dispose();
 		new MainFrame();

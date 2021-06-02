@@ -5,11 +5,29 @@ import java.awt.Color;
 import javax.swing.JLabel;
 
 public class Paddle extends JLabel{
-	int x=100,y=225;
+	private int positionX=100;
+	private int positionY=225;
 	Paddle(){
 		this.setOpaque(true);
 		this.setBackground(Color.white);
-		this.setBounds(x,y,10,75);
+		this.setBounds(positionX,positionY,10,75);
 
+	}
+	public int getPositionX() {
+		return positionX;
+	}
+	public void setPositionX(int positionX) {
+		this.positionX = positionX;
+	}
+	public int getPositionY() {
+		return positionY;
+	}
+	public void setPositionY(int positionY) {
+		this.positionY = positionY;
+	}
+	public void setDefaultPosition() {
+		positionX=100;
+		positionY=225;
+		this.setLocation(positionX,positionY);
 	}
 }
