@@ -15,7 +15,7 @@ public class MainFrame extends JFrame implements KeyListener{
 	
 	Scanner sc=new Scanner(System.in);
 	PlayPanel playPanel = new PlayPanel();
-	Paddle paddle = new Paddle();
+	static Paddle paddle = new Paddle();
 	Ball ball = new Ball();
 	JLabel pauseLabel = new JLabel();
 	String choice="";
@@ -57,14 +57,10 @@ public class MainFrame extends JFrame implements KeyListener{
 					@Override
 					public void run() {
 						while(true) {
-						if(ball.move(paddle)==-1) {
+						if(ball.move()==-1) {
 							timer.cancel();
 							timer.purge();
-							ball.setDefaultPosition();
-							paddle.setDefaultPosition();
-							pauseLabel.setText("Game Over!");
-							pauseLabel.setBounds(550, 400, 1200, 200);
-							pauseLabel.setVisible(true);
+							gameOver();
 							break;
 							}
 						}
@@ -115,6 +111,15 @@ public class MainFrame extends JFrame implements KeyListener{
 		pauseLabel.setBounds(300, 400, 1200, 200);
 		playPanel.add(pauseLabel);
 	}
+	public void gameOver() {
+		ball.setDefaultPosition();
+		paddle.setDefaultPosition();
+		pauseLabel.setText("Game Over!");
+		pauseLabel.setForeground(Color.red);
+		pauseLabel.setBounds(550, 400, 1200, 200);
+		pauseLabel.setVisible(true);
+	}
+	
 	private void closeGame() {
 		this.dispose();
 		new MainFrame();

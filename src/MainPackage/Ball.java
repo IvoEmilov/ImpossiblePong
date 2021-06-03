@@ -40,9 +40,9 @@ public class Ball extends JLabel{
 		this.positionY=290;
 		this.setLocation(positionX, positionY);
 	}
-	public int move(Paddle paddle) {
+	public int move() {
 		if(positionX==110) {
-			if(positionY>paddle.getPositionY()&&positionY<paddle.getPositionY()+75) {
+			if(positionY>MainFrame.paddle.getPositionY()&&positionY<MainFrame.paddle.getPositionY()+75) {
 				VelocityX=-VelocityX;
 				VelocityY=-(random.nextInt(4)+1);
 			}
