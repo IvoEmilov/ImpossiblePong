@@ -15,10 +15,13 @@ public class MainFrame extends JFrame implements KeyListener{
 	
 	Scanner sc=new Scanner(System.in);
 	PlayPanel playPanel = new PlayPanel();
+	PointsPanel pointsPanel = new PointsPanel();
 	static Paddle paddle = new Paddle();
 	Ball ball = new Ball();
 	JLabel pauseLabel = new JLabel();
-	String choice="";
+	TimeThread timeThread = new TimeThread();
+	static CurrentTime currentTime = new CurrentTime();
+	static HighScore highScore = new HighScore();
 	MainFrame(){
 		
 		this.setSize(1400,800);
@@ -30,11 +33,13 @@ public class MainFrame extends JFrame implements KeyListener{
 		this.setResizable(false);
 		
 		playPanel.add(paddle);
-		playPanel.add(ball);	
+		playPanel.add(ball);
+		pointsPanel.add(currentTime);
+		pointsPanel.add(highScore);
 		
 		this.add(playPanel, BorderLayout.CENTER);
-		this.add(new PointsPanel(), BorderLayout.SOUTH);
-		
+		this.add(pointsPanel, BorderLayout.SOUTH);
+			
 		newGame();
 		
 	}
@@ -56,6 +61,7 @@ public class MainFrame extends JFrame implements KeyListener{
 
 					@Override
 					public void run() {
+						timeThread.start();
 						while(true) {
 						if(ball.move()==-1) {
 							timer.cancel();
@@ -104,26 +110,30 @@ public class MainFrame extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
-	public void newGame() {
+	
+	private void newGame() {
 		pauseLabel.setText("Press Enter to start. Press ESC to quit.");
 		pauseLabel.setFont(new Font("TimesRoman", Font.BOLD, 52));
 		pauseLabel.setForeground(Color.white);
 		pauseLabel.setBounds(300, 400, 1200, 200);
 		playPanel.add(pauseLabel);
+		currentTime.setText("Time Survived: 0.000");
+		highScore.loadScore();
 	}
-	public void gameOver() {
+	private void gameOver() {
+		timeThread.stopThread();
+		highScore.saveScore();
 		ball.setDefaultPosition();
 		paddle.setDefaultPosition();
 		pauseLabel.setText("Game Over!");
 		pauseLabel.setForeground(Color.red);
 		pauseLabel.setBounds(550, 400, 1200, 200);
-		pauseLabel.setVisible(true);
+		pauseLabel.setVisible(true);	
 	}
-	
+		
 	private void closeGame() {
 		this.dispose();
 		new MainFrame();
-
 	}
 	
 }
