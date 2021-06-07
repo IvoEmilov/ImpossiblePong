@@ -5,13 +5,14 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.*;
 
 public class HighScore extends JLabel{
 	
-	private String score;
+	private String score="0.000";	
 	
 	HighScore(){
 		this.setOpaque(true);
@@ -23,6 +24,9 @@ public class HighScore extends JLabel{
 	public void loadScore() {
 		try {
 		File f = new File("highscore.txt");
+		if(f.createNewFile()) {
+			
+		}
 		Scanner sc = new Scanner(f);
 		while(sc.hasNextLine()) {
 			score = sc.nextLine();
@@ -30,9 +34,14 @@ public class HighScore extends JLabel{
 		sc.close();
 		}
 		catch(FileNotFoundException e) {
-			score="0.000";
+			e.printStackTrace();
 		}
-		this.setText("Best Time: "+score);
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			this.setText("Best Time: "+score);
+		}
 	}
 	public void saveScore() {
 		try {

@@ -42,13 +42,14 @@ public class Ball extends JLabel{
 	}
 	public int move() {
 		if(positionX==110) {
-			if(positionY>MainFrame.paddle.getPositionY()&&positionY<MainFrame.paddle.getPositionY()+75) {
+			if(positionY>MainFrame.player.getPositionY()&&positionY<MainFrame.player.getPositionY()+75) {
 				VelocityX=-VelocityX;
 				VelocityY=-(random.nextInt(4)+1);
 			}
 		}
-		if(positionX==1380) {
+		if(positionX==1285) {
 			VelocityX=-VelocityX;
+			VelocityY=(random.nextInt(4)+1);
 		}
 		if((positionY>=0&&positionY<=5)||(positionY>=545&&positionY<=550)) {
 			VelocityY=-VelocityY;
@@ -60,6 +61,9 @@ public class Ball extends JLabel{
 		positionX+=VelocityX;
 		positionY+=VelocityY;
 		this.setLocation(positionX, positionY);
+		if(this.getPositionX()>=900){
+			MainFrame.opponent.setLocation(1280,this.getPositionY()-35);
+		}
 		try {
 			Thread.sleep(3);
 		} catch (InterruptedException e) {

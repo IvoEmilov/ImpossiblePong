@@ -16,7 +16,8 @@ public class MainFrame extends JFrame implements KeyListener{
 	Scanner sc=new Scanner(System.in);
 	PlayPanel playPanel = new PlayPanel();
 	PointsPanel pointsPanel = new PointsPanel();
-	static Paddle paddle = new Paddle();
+	static Paddle player = new Paddle();
+	static Paddle opponent = new Paddle();
 	Ball ball = new Ball();
 	JLabel pauseLabel = new JLabel();
 	TimeThread timeThread = new TimeThread();
@@ -32,13 +33,16 @@ public class MainFrame extends JFrame implements KeyListener{
 		this.addKeyListener(this);
 		this.setResizable(false);
 		
-		playPanel.add(paddle);
+		playPanel.add(player);
+		playPanel.add(opponent);
 		playPanel.add(ball);
 		pointsPanel.add(currentTime);
 		pointsPanel.add(highScore);
 		
 		this.add(playPanel, BorderLayout.CENTER);
 		this.add(pointsPanel, BorderLayout.SOUTH);
+
+		opponent.setLocation(1290,225);
 			
 		newGame();
 		
@@ -55,9 +59,10 @@ public class MainFrame extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		//System.out.println(e.getKeyCode());//e=69, q=81 Enter=10, ESC=27
 		if(e.getKeyCode()==10) {
-			if(pauseLabel.isVisible()) {
+			if(pauseLabel.isVisible()&&!pauseLabel.getText().equals("Game Over!")) {
 				Timer timer = new Timer();
 				TimerTask task = new TimerTask() {
+
 
 					@Override
 					public void run() {
@@ -91,16 +96,16 @@ public class MainFrame extends JFrame implements KeyListener{
 		}
 		if(e.getKeyCode()==38)
 		{
-			if(paddle.getPositionY()-25>-10) {
-				paddle.setPositionY(paddle.getPositionY()-25);
-				paddle.setLocation(paddle.getPositionX(), paddle.getPositionY());	
+			if(player.getPositionY()-25>-10) {
+				player.setPositionY(player.getPositionY()-25);
+				player.setLocation(player.getPositionX(), player.getPositionY());
 			}	
 		}
 		else if(e.getKeyCode()==40)
 		{
-			if(paddle.getPositionY()+25<525) {
-				paddle.setPositionY(paddle.getPositionY()+25);
-				paddle.setLocation(paddle.getPositionX(), paddle.getPositionY());	
+			if(player.getPositionY()+25<525) {
+				player.setPositionY(player.getPositionY()+25);
+				player.setLocation(player.getPositionX(), player.getPositionY());
 			}	
 		}	
 	}
@@ -124,11 +129,11 @@ public class MainFrame extends JFrame implements KeyListener{
 		timeThread.stopThread();
 		highScore.saveScore();
 		ball.setDefaultPosition();
-		paddle.setDefaultPosition();
+		player.setDefaultPosition();
 		pauseLabel.setText("Game Over!");
 		pauseLabel.setForeground(Color.red);
 		pauseLabel.setBounds(550, 400, 1200, 200);
-		pauseLabel.setVisible(true);	
+		pauseLabel.setVisible(true);
 	}
 		
 	private void closeGame() {
